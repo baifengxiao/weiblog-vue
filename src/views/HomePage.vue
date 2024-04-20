@@ -1,9 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { listCategory } from '../api/category.js'
+import { listArticle } from '../api/article.js'
 
 onMounted(() => {
   getCategoryList()
+  getarticleList()
 })
 
 // 初始化文章分类集合
@@ -11,10 +13,26 @@ const categoryList = ref([])
 
 // 查询所有分类的异步函数
 const getCategoryList = async () => {
-  //结构，将data数据拿出来赋值给data对象
+  //解构，将data数据拿出来赋值给data对象
   const { data } = await listCategory()
   categoryList.value = data
 }
+
+//初始化响应式文章对象article（开始为null,有结果之后能拿到结果）
+const articleData = {
+  cid: null,
+}
+const article = ref(articleData)
+
+//初始化文章集合
+const articleList = ref([])
+
+const getarticleList = async () => {
+  const { data } = await listArticle(article)
+  articleList.value = data
+}
+
+// articleData.value.cid=cate
 </script>
 <template>
   <div>
@@ -102,10 +120,13 @@ const getCategoryList = async () => {
 
         <div id="post-list" class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
           <div
+            v-for="(article, index) in articleList"
+            :key="index"
             class="overflow-hidden rounded-xl bg-white shadow-md hover:-translate-y-1 hover:ring-2"
           >
             <div class="aspect-w-16 aspect-h-9">
               <a href="http://127.0.0.1:5173/#/detail" title="【spring MVC】">
+                <!-- //TODO -->
                 <img
                   src="https://www.gulixueyuan.com/files/course/2021/08-02/151735f51c11714475.png"
                   class="h-full w-full object-cover transition-all duration-500 group-hover:scale-105"
@@ -114,17 +135,16 @@ const getCategoryList = async () => {
             </div>
             <div class="relative flex flex-col gap-2 p-4">
               <h1 class="text-2xl font-medium">
-                <a href="http://127.0.0.1:5173/#/detail" title="【spring MVC】"
-                  >【spring MVC】</a
+                <a
+                  href="http://127.0.0.1:5173/#/detail"
+                  title="【spring MVC】"
+                  >{{ article.title }}</a
                 >
               </h1>
-              <p class="font-sm font-light line-clamp-6">
-                Spring MVC属于SpringFrameWork的后续产品，已经融合在Spring Web
-                Flow里面。Spring 框架提供了构建 Web 应用程序的全功能 MVC
-                模块。使用 Spring 可插入的 MVC
-                架构，从而在使用Spring进行WEB开发时，可以选择使用Spring的Spring
-                MVC框架或集成其他MVC开发框架
-              </p>
+              <p
+                class="font-sm font-light line-clamp-6"
+                v-html="article.content"
+              ></p>
               <div class="mt-4 flex flex-1 items-center">
                 <a href="http://127.0.0.1:5173/#/detail">
                   <img
@@ -132,43 +152,9 @@ const getCategoryList = async () => {
                     class="h-8 w-8 dark:border-slate-700"
                   />
                 </a>
-                <span class="text-sm text-gray-600">发布于 2023-06-26</span>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="overflow-hidden rounded-xl bg-white shadow-md hover:-translate-y-1 hover:ring-2"
-          >
-            <div class="aspect-w-16 aspect-h-9">
-              <a href="http://127.0.0.1:5173/#/detail" title="【spring MVC】">
-                <img
-                  src="https://www.gulixueyuan.com/files/course/2021/08-02/151735f51c11714475.png"
-                  class="h-full w-full object-cover transition-all duration-500 group-hover:scale-105"
-                />
-              </a>
-            </div>
-            <div class="relative flex flex-col gap-2 p-4">
-              <h1 class="text-2xl font-medium">
-                <a href="http://127.0.0.1:5173/#/detail" title="【spring MVC】"
-                  >【spring MVC】</a
+                <span class="text-sm text-gray-600"
+                  >发布于{{ article.createTime }}</span
                 >
-              </h1>
-              <p class="font-sm font-light line-clamp-6">
-                Spring MVC属于SpringFrameWork的后续产品，已经融合在Spring Web
-                Flow里面。Spring 框架提供了构建 Web 应用程序的全功能 MVC
-                模块。使用 Spring 可插入的 MVC
-                架构，从而在使用Spring进行WEB开发时，可以选择使用Spring的Spring
-                MVC框架或集成其他MVC开发框架
-              </p>
-              <div class="mt-4 flex flex-1 items-center">
-                <a href="http://127.0.0.1:5173/#/detail">
-                  <img
-                    src="../assets/this0.jpg"
-                    class="h-8 w-8 dark:border-slate-700"
-                  />
-                </a>
-                <span class="text-sm text-gray-600">发布于 2023-06-26</span>
               </div>
             </div>
           </div>
