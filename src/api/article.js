@@ -7,3 +7,10 @@ export const listArticle = (article) => {
     data: article,
   })
 }
+
+export const showArticle = (id) => {
+  return axios({
+    url: `/article/${id}`,
+    method: 'get',
+  })
+}

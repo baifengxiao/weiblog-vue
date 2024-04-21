@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { listCategory } from '../api/category.js'
 import { listArticle } from '../api/article.js'
+import { useRoute, useRouter } from 'vue-router'
 
 onMounted(() => {
   getCategoryList()
@@ -35,6 +36,15 @@ const getArticleList = async () => {
 const getArticleByCid = (cid) => {
   article.value.cid = cid
   getArticleList()
+}
+
+const router = useRouter()
+const showArticle = (id) => {
+  router.push({
+    //localhost:5137/#/detail?id=31   路由路径传参
+    path: '/detail',
+    query: { id: id },
+  })
 }
 </script>
 <template>
@@ -128,7 +138,11 @@ const getArticleByCid = (cid) => {
             class="overflow-hidden rounded-xl bg-white shadow-md hover:-translate-y-1 hover:ring-2"
           >
             <div class="aspect-w-16 aspect-h-9">
-              <a href="http://127.0.0.1:5173/#/detail" title="【spring MVC】">
+              <a
+                href="javascript:;"
+                @click="showArticle(article.id)"
+                title="【spring MVC】"
+              >
                 <!-- //TODO -->
                 <img
                   src="https://www.gulixueyuan.com/files/course/2021/08-02/151735f51c11714475.png"
@@ -138,18 +152,16 @@ const getArticleByCid = (cid) => {
             </div>
             <div class="relative flex flex-col gap-2 p-4">
               <h1 class="text-2xl font-medium">
-                <a
-                  href="http://127.0.0.1:5173/#/detail"
-                  title="【spring MVC】"
-                  >{{ article.title }}</a
-                >
+                <a href="javascript:;" @click="showArticle(article.id)">{{
+                  article.title
+                }}</a>
               </h1>
               <p
                 class="font-sm font-light line-clamp-6"
                 v-html="article.content"
               ></p>
               <div class="mt-4 flex flex-1 items-center">
-                <a href="http://127.0.0.1:5173/#/detail">
+                <a href="javascript:;" @click="showArticle(article.id)">
                   <img
                     src="../assets/this0.jpg"
                     class="h-8 w-8 dark:border-slate-700"
