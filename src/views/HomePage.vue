@@ -5,7 +5,7 @@ import { listArticle } from '../api/article.js'
 
 onMounted(() => {
   getCategoryList()
-  getarticleList()
+  getArticleList()
 })
 
 // 初始化文章分类集合
@@ -27,12 +27,15 @@ const article = ref(articleData)
 //初始化文章集合
 const articleList = ref([])
 
-const getarticleList = async () => {
-  const { data } = await listArticle(article)
+const getArticleList = async () => {
+  const { data } = await listArticle(article.value)
   articleList.value = data
 }
 
-// articleData.value.cid=cate
+const getArticleByCid = (cid) => {
+  article.value.cid = cid
+  getArticleList()
+}
 </script>
 <template>
   <div>
@@ -101,7 +104,7 @@ const getarticleList = async () => {
       <div class="col-span-4 sm:col-span-3">
         <ul id="filters" class="flex flex-wrap gap-2">
           <li>
-            <a href="http://127.0.0.1:5173/">
+            <a href="http://localhost:5173/">
               <span class="truncate text-base"> 全部 </span>
             </a>
           </li>
@@ -112,7 +115,7 @@ const getarticleList = async () => {
             x-data="dropdown"
             class="relative cursor-pointer transition-all"
           >
-            <a href="http://127.0.0.1:5173/">
+            <a href="javascript:;" @click="getArticleByCid(category.cid)">
               <span class="truncate text-base">{{ category.cname }}</span>
             </a>
           </li>
