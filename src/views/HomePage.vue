@@ -77,7 +77,7 @@ const showArticle = (id) => {
 
           <ul class="hidden items-center gap-8 sm:flex">
             <!-- relative是定位 text-sm是文本设置 x-data不知道，我把他注释掉了，恢复就放在下一行 text-sm 后面 x-data="dropdown" -->
-            <li class="relative text-sm">
+            <li class="relative text-sm" x-data="dropdown">
               <!-- text-gray-600设置了文本透明度和文本颜色 -->
               <a class="text-gray-600" href="http://127.0.0.1:5173/">首页</a>
             </li>

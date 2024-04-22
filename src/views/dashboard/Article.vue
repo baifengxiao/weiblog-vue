@@ -4,7 +4,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import RichTextEditor from '../../components/RichTextEditor.vue'
 
 import cookie from 'js-cookie'
-import { listArticleByUid } from '../../api/article'
+import { listArticleByUid, showArticle } from '../../api/article'
 
 const categoryList = ref([])
 // 定义表格数据模型
@@ -32,6 +32,14 @@ const getArticleList = async () => {
   //3.赋值给表格绑定的list集合
   list.value = data
 }
+
+//2.查询单个
+const show = async (row) => {
+  const { data } = await showArticle(row.id)
+  article.value = data
+  dialogShowVisible.value = true
+}
+
 onMounted(() => {
   getArticleList()
 })
