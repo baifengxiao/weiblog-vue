@@ -1,3 +1,41 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import RichTextEditor from '../../components/RichTextEditor.vue'
+
+import cookie from 'js-cookie'
+import { listArticleByUid } from '../../api/article'
+
+const categoryList = ref([])
+// 定义表格数据模型
+let list = ref([])
+
+// 控制对话是否展示的变量
+const dialogVisible = ref(false)
+const dialogShowVisible = ref(false)
+const defaultForm = {
+  id: '',
+  cid: '',
+  title: '',
+  content: '',
+}
+const article = ref(defaultForm) // 使用ref包裹该对象，使用reactive不方便进行重置
+
+//1.查询所有
+const getArticleList = async () => {
+  //1.获取uid
+  let uid = cookie.get(`uid`)
+
+  //2.uid作为条件发送异步请求，得到数据，解构
+  const { data } = await listArticleByUid(uid)
+
+  //3.赋值给表格绑定的list集合
+  list.value = data
+}
+onMounted(() => {
+  getArticleList()
+})
+</script>
 <template>
   <div class="search-div">
     <!-- 添加按钮 -->
@@ -60,28 +98,6 @@
     </el-dialog>
   </div>
 </template>
-
-<script setup>
-import { ref, onMounted } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import RichTextEditor from '../../components/RichTextEditor.vue'
-
-const categoryList = ref([])
-// 定义表格数据模型
-let list = ref([])
-
-// 控制对话是否展示的变量
-const dialogVisible = ref(false)
-const dialogShowVisible = ref(false)
-const defaultForm = {
-  id: '',
-  cid: '',
-  title: '',
-  content: '',
-}
-const article = ref(defaultForm) // 使用ref包裹该对象，使用reactive不方便进行重置
-</script>
-
 <style scoped>
 .search-div {
   margin-bottom: 10px;

@@ -14,3 +14,10 @@ export const showArticle = (id) => {
     method: 'get',
   })
 }
+
+export const listArticleByUid = (uid) => {
+  return axios({
+    url: `/article/showAllByUid/${uid}`,
+    method: 'get',
+  })
+}
