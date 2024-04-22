@@ -86,7 +86,7 @@ const showArticle = (id) => {
 
         <div class="flex items-center">
           <a
-            href="http://127.0.0.1:5173/#/login"
+            href="http://localhost:5173/#/login"
             title="发布博文"
             class="inline-flex h-full items-center"
           >
