@@ -4,9 +4,18 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import RichTextEditor from '../../components/RichTextEditor.vue'
 
 import cookie from 'js-cookie'
-import { listArticleByUid, showArticle } from '../../api/article'
+import {
+  listArticleByUid,
+  showArticle,
+  updataArticleById,
+} from '../../api/article'
+import { listCategory } from '../../api/category'
 
-const categoryList = ref([])
+onMounted(() => {
+  getArticleList()
+  getCategoryList()
+})
+
 // 定义表格数据模型
 let list = ref([])
 
@@ -40,9 +49,37 @@ const show = async (row) => {
   dialogShowVisible.value = true
 }
 
-onMounted(() => {
-  getArticleList()
-})
+const categoryList = ref([])
+const getCategoryList = async () => {
+  const { data } = await listCategory()
+  categoryList.value = data
+}
+
+//3.修改文章之展示要修改的文章
+//也就是单个查询，不过展示的文本框不一样
+const update = async (row) => {
+  const { data } = await showArticle(row.id)
+  article.value = data
+  dialogVisible.value = true
+}
+
+//4.提交，修改or添加
+const submit = async () => {
+  //根据article的id做判断即可
+
+  if (article.value.id) {
+    const { code } = await updataArticleById(article.value)
+    if (code == 200) {
+      ElMessage({
+        showClose: true,
+        message: '修改成功',
+        type: 'success',
+      })
+      dialogVisible.value = false
+      getArticleList()
+    }
+  }
+}
 </script>
 <template>
   <div class="search-div">
@@ -59,6 +96,9 @@ onMounted(() => {
       <el-table-column label="操作" align="center" width="280" #default="scope">
         <el-button type="primary" size="small" @click="show(scope.row)">
           查看
+        </el-button>
+        <el-button type="primary" size="small" @click="update(scope.row)">
+          修改
         </el-button>
         <el-button type="danger" size="small" @click="deleteById(scope.row)">
           删除

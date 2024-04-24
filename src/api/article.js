@@ -21,3 +21,11 @@ export const listArticleByUid = (uid) => {
     method: 'get',
   })
 }
+
+export const updataArticleById = (article) => {
+  return axios({
+    url: `/article/`,
+    method: 'put',
+    data: article,
+  })
+}
