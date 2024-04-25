@@ -8,6 +8,8 @@ import {
   listArticleByUid,
   showArticle,
   updataArticleById,
+  insertArticle,
+  deleteArticleById,
 } from '../../api/article'
 import { listCategory } from '../../api/category'
 
@@ -78,7 +80,53 @@ const submit = async () => {
       dialogVisible.value = false
       getArticleList()
     }
+  } else {
+    //新增
+    const uid = cookie.get('uid')
+    article.value.uid = uid
+    const { code } = await insertArticle(article.value)
+    if (code == 200) {
+      ElMessage({
+        showClose: true,
+        message: '添加文章成功',
+        type: 'success',
+      })
+      dialogVisible.value = false
+      getArticleList()
+    }
   }
+}
+
+//5.添加
+const addShow = () => {
+  article.value = {}
+  dialogVisible.value = true
+}
+
+//6,删除
+const deleteById = async (row) => {
+  ElMessageBox.confirm('您确定要删除这篇文章吗?', '警告！', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(async () => {
+      const { code } = await deleteArticleById(row.id)
+      if (code == 200) {
+        ElMessage({
+          type: 'success',
+          message: '删除文章成功',
+        })
+
+        getArticleList()
+      }
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消删除',
+      })
+    })
 }
 </script>
 <template>

@@ -29,3 +29,19 @@ export const updataArticleById = (article) => {
     data: article,
   })
 }
+
+export const insertArticle = (article) => {
+  return axios({
+    url: `/article/`,
+    method: 'post',
+    data: article,
+  })
+}
+
+export const deleteArticleById = (id) => {
+  return axios({
+    url: `/article/${id}`,
+    method: 'delete',
+    data: id,
+  })
+}
