@@ -85,8 +85,8 @@ const category = ref(defaultForm) // 使用ref包裹该对象，使用reactive�
     <el-pagination
       v-model:current-page="pageParams.page"
       v-model:page-size="pageParams.limit"
-      @size-change="fetchData"
-      @current-change="fetchData"
+      @size-change="getCategoryList"
+      @current-change="getCategoryList"
       layout="total, prev, pager, next"
       :total="total"
     />
