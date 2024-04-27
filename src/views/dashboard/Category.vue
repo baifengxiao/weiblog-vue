@@ -34,6 +34,17 @@ const getCategoryList = async () => {
   total.value = data.total
 }
 
+//搜索
+const searchCategory = () => {
+  getCategoryList()
+}
+
+//重置
+const resetData = () => {
+  queryDto.value = {}
+  getCategoryList()
+}
+
 // 控制对话是否展示的变量
 const dialogVisible = ref(false)
 const defaultForm = {
