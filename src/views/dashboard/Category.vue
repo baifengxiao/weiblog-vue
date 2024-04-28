@@ -5,6 +5,7 @@ import {
   listCategory,
   listCategoryByPage,
   updateCategory,
+  addCategory,
 } from '../../api/category'
 
 // 分页条总记录数
@@ -63,13 +64,31 @@ const submit = async () => {
     if (code == 200) {
       ElMessage({
         showClose: true,
-        message: '添加文章成功',
+        message: '修改分类成功',
+        type: 'success',
+      })
+      dialogVisible.value = false
+      getCategoryList()
+    }
+  } else {
+    //添加
+    const { code } = await addCategory(category.value)
+    if (code == 200) {
+      ElMessage({
+        showClose: true,
+        message: '新增分类成功',
         type: 'success',
       })
       dialogVisible.value = false
       getCategoryList()
     }
   }
+}
+
+//6.添加
+const addShow = async () => {
+  category.value = {}
+  dialogVisible.value = true
 }
 
 // 控制对话是否展示的变量

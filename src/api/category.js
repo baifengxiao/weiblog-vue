@@ -24,3 +24,11 @@ export const updateCategory = (category) => {
     data: category,
   })
 }
+
+export const addCategory = (category) => {
+  return axios({
+    url: `/category`,
+    method: `post`,
+    data: category,
+  })
+}
