@@ -1,7 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { listCategory, listCategoryByPage } from '../../api/category'
+import {
+  listCategory,
+  listCategoryByPage,
+  updateCategory,
+} from '../../api/category'
 
 // 分页条总记录数
 let total = ref(0)
@@ -43,6 +47,29 @@ const searchCategory = () => {
 const resetData = () => {
   queryDto.value = {}
   getCategoryList()
+}
+
+//修改,传递数据，显示修改框
+const editShow = async (row) => {
+  category.value = row
+  dialogVisible.value = true
+}
+
+//新增or修改
+const submit = async () => {
+  if (category.value.cid) {
+    //修改
+    const { code } = await updateCategory(category.value)
+    if (code == 200) {
+      ElMessage({
+        showClose: true,
+        message: '添加文章成功',
+        type: 'success',
+      })
+      dialogVisible.value = false
+      getCategoryList()
+    }
+  }
 }
 
 // 控制对话是否展示的变量
