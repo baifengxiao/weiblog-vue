@@ -5,8 +5,9 @@ import {
   listCategory,
   listCategoryByPage,
   updateCategory,
-  addCategory,
+  addCategory,remoeById
 } from '../../api/category'
+import {deleteArticleById} from "../../api/article.js";
 
 // 分页条总记录数
 let total = ref(0)
@@ -89,6 +90,35 @@ const submit = async () => {
 const addShow = async () => {
   category.value = {}
   dialogVisible.value = true
+}
+
+//7.删除
+const  deleteById=async (row)=>{
+
+  ElMessageBox.confirm("您确定要删除${row.cname}吗?", '警告！', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+      .then(async () => {
+        const {code}=await remoeById(row.cid)
+        if (code == 200) {
+          ElMessage({
+            showClose: true,
+            message: '删除分类成功',
+            type: 'success',
+          })
+          getCategoryList()
+        }
+      })
+      .catch(() => {
+        ElMessage({
+          type: 'info',
+          message: '取消删除',
+        })
+      })
+
+
 }
 
 // 控制对话是否展示的变量
