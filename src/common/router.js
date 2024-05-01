@@ -19,10 +19,10 @@ let routes = [
         path: '/dashboard/article',
         component: () => import('../views/dashboard/Article.vue'),
       },
-      // {
-      //   path: '/dashboard/user',
-      //   component: () => import('../views/dashboard/User.vue'),
-      // },
+      {
+        path: '/dashboard/user',
+        component: () => import('../views/dashboard/User.vue'),
+      },
     ],
   },
 ]
